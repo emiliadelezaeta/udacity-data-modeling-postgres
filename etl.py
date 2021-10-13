@@ -4,8 +4,12 @@ import psycopg2
 import pandas as pd
 from sql_queries import *
 
-
 def process_song_file(cur, filepath):
+
+    """
+        Function to insert records into the dimension tables songs and artists coming from song files
+    """
+
     # open song file
     df = pd.read_json(filepath, lines=True)
 
@@ -19,6 +23,12 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+
+    """
+        Function to insert records into the dimension tables time, users and songplay fact table coming from log files filtered by NextSong page
+        Get the variables songid and artistid executing a join between dimension tables songs and artists and filtering by song name, artist name and song lenght
+    """
+
     # open log file
     df = pd.read_json(filepath, lines=True)
 
@@ -65,6 +75,11 @@ def process_log_file(cur, filepath):
 
 
 def process_data(cur, conn, filepath, func):
+
+    """
+        Read the files song_data and log_data
+    """
+
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
@@ -84,6 +99,11 @@ def process_data(cur, conn, filepath, func):
 
 
 def main():
+    """
+        Open the connection to postgres database
+        Call the fuctions to process and insert song and log data
+    """
+
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
     cur = conn.cursor()
 
