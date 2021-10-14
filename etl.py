@@ -33,7 +33,7 @@ def process_log_file(cur, filepath):
      It extracts the user information in order to store it into the users table.
      Then it extracts the time information in order to store it into the time table.
      Execute the song_select query in sql_queries.py to find the song ID and artist ID based on the title, artist name, and duration of a song.
-     For the last, it insert data into the fact table songplays
+     And for the last, it insert data into the fact table songplays
 
      INPUTS:
      * cur the cursor variable
