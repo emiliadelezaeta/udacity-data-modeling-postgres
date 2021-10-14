@@ -5,10 +5,15 @@ import pandas as pd
 from sql_queries import *
 
 def process_song_file(cur, filepath):
+    """
+     This procedure processes a song file whose filepath has been provided as an argument.
+     It extracts the song information in order to store it into the songs table.
+     Then it extracts the artist information in order to store it into the artists table.
 
-    """
-        Function to insert records into the dimension tables songs and artists coming from song files
-    """
+     INPUTS:
+     * cur the cursor variable
+     * filepath the file path to the song file
+     """
 
     # open song file
     df = pd.read_json(filepath, lines=True)
@@ -23,11 +28,17 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    """
+     This procedure processes a log file whose filepath has been provided as an argument.
+     It extracts the user information in order to store it into the users table.
+     Then it extracts the time information in order to store it into the time table.
+     Execute the song_select query in sql_queries.py to find the song ID and artist ID based on the title, artist name, and duration of a song.
+     For the last, it insert data into the fact table songplays
 
-    """
-        Function to insert records into the dimension tables time, users and songplay fact table coming from log files filtered by NextSong page
-        Get the variables songid and artistid executing a join between dimension tables songs and artists and filtering by song name, artist name and song lenght
-    """
+     INPUTS:
+     * cur the cursor variable
+     * filepath the file path to the log file
+     """
 
     # open log file
     df = pd.read_json(filepath, lines=True)
@@ -77,7 +88,14 @@ def process_log_file(cur, filepath):
 def process_data(cur, conn, filepath, func):
 
     """
-        Read the files song_data and log_data
+         Procedure to get a list of all song JSON files in data/song_data
+         And also it gets a list of logs of all logs files in data/log_data
+
+         INPUTS:
+         cur the cursor variable.
+         the connection to sparkifydb in postgres.
+         path to the folder where the files are
+         and the function to be called process_song_file or process_log_file.
     """
 
     # get all files matching extension from directory
@@ -101,7 +119,7 @@ def process_data(cur, conn, filepath, func):
 def main():
     """
         Open the connection to postgres database
-        Call the fuctions to process and insert song and log data
+        Call the functions to process and insert data coming from song and log files
     """
 
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
